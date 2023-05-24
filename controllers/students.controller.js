@@ -9,10 +9,12 @@ module.exports.studentsController = {
         gender,
         students,
         faculty,
+        direction,
         course,
         group,
         educationForm,
         educationType,
+        educationLevel,
         changeDate,
         details,
       } = req.body.data;
@@ -27,10 +29,12 @@ module.exports.studentsController = {
         gender,
         students,
         faculty,
+        direction,
         course,
         group,
         educationForm,
         educationType,
+        educationLevel,
         status,
         relocation: {
           from,
@@ -64,7 +68,7 @@ module.exports.studentsController = {
   },
   async changeStudentData(req, res) {
     try {
-      const worker = await User.findById(req.user.id);
+      const worker = await User.findById(req.params.workerId);
       const student = await Student.findById(req.params.id);
       if (String(worker._id) !== String(student.addedBy)) {
         return res.json({ error: "Ошибка доступа" });

@@ -15,7 +15,11 @@ const StudentSchema = mongoose.Schema(
       type: String,
     },
     faculty: {
-      type: String, 
+      type: String,
+      required: true,
+    },
+    direction: {
+      type: String,
       required: true,
     },
     course: {
@@ -31,6 +35,10 @@ const StudentSchema = mongoose.Schema(
       required: true,
     },
     educationType: {
+      type: String,
+      required: true,
+    },
+    educationLevel: {
       type: String,
       required: true,
     },

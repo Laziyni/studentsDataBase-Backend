@@ -7,7 +7,7 @@ const router = Router();
 
 router.post("/", authMiddleware, studentsController.postStudent);
 router.get("/status/:title", studentsController.getStudentByStatus);
-router.patch("/student/:id", studentsController.changeStudentData);
+router.patch("/student/:workerId/:id", studentsController.changeStudentData);
 router.get("/student/:id", studentsController.getStudentById);
 
 module.exports = router;
