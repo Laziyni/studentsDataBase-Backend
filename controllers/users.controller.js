@@ -5,7 +5,6 @@ const jwt = require("jsonwebtoken");
 module.exports.usersController = {
   async signUp(req, res) {
     try {
-      console.log(req.body);
       const { fullname, login, password, jobTitle, department } = req.body;
 
       const hash = await bcrypt.hash(
@@ -42,9 +41,14 @@ module.exports.usersController = {
     try {
       const payload = {
         id: condidate.id,
+        role: condidate.role,
+        fullname: condidate.fullname,
+        department: condidate.department,
+        jobTitle: condidate.jobTitle,
       };
+
       const token = jwt.sign(payload, process.env.SECRET_JWT_KEY, {
-        expiresIn: "24h",
+        expiresIn: "7d",
       });
       res.json({
         token,

@@ -13,7 +13,7 @@ const UserSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    jobTitle: {},
+    jobTitle: { type: String, required: true },
   },
   { timestamps: true }
 );

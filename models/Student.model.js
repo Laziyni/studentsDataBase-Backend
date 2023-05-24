@@ -5,7 +5,6 @@ const StudentSchema = mongoose.Schema(
     addedBy: {
       type: mongoose.SchemaTypes.ObjectId,
       ref: "Student",
-      required: true,
     },
     fullname: {
       type: String,
@@ -14,9 +13,12 @@ const StudentSchema = mongoose.Schema(
     gender: { type: String, required: true },
     department: {
       type: String,
-      required: true,
     },
     faculty: {
+      type: String,
+      required: true,
+    },
+    direction: {
       type: String,
       required: true,
     },
@@ -36,16 +38,22 @@ const StudentSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    status: {
-      title: { type: String, required: true },
-      from: { type: String, required: true },
-      to: { type: String, required: true },
+    educationLevel: {
+      type: String,
+      required: true,
+    },
+    status: { type: String, required: true },
+    relocation: {
+      from: { type: String, default: null },
+      to: { type: String, default: null },
     },
     changeDate: {
       type: String,
       required: true,
     },
+    details: { type: String },
   },
+
   { timestamps: true }
 );
 

@@ -9,49 +9,87 @@ module.exports.studentsController = {
         gender,
         students,
         faculty,
-        department,
+        direction,
         course,
         group,
         educationForm,
         educationType,
-        status,
+        educationLevel,
         changeDate,
-      } = req.body;
-      const { title, from, to } = status;
-      const addedBy = req.user.id;
+        details,
+      } = req.body.data;
+      const { status, from, to } = req.body.status;
+
+      const worker = await User.findById(req.user.id);
+
       const data = await Student.create({
-        department,
+        addedBy: req.user.id,
+        department: worker.department,
         fullname,
         gender,
         students,
         faculty,
+        direction,
         course,
         group,
         educationForm,
         educationType,
-        status: { title, from, to },
+        educationLevel,
+        status,
+        relocation: {
+          from,
+          to,
+        },
+        details,
         changeDate,
-        addedBy,
       });
+
       return res.json(data);
     } catch (error) {
       return res.json({ error: error.message });
     }
   },
-  async getAllStudents(req, res) {
+  async getStudentByStatus(req, res) {
     try {
-      const data = await Student.find();
+      const { title } = req.params;
+      const data = await Student.find({}, null, { sort: { fullname: 1 } });
+      if (title.toLowerCase() === "все") {
+        return res.json(data);
+      } else {
+        const dataByStatus = data.filter(
+          (item) =>
+            String(item.status).toLowerCase() === String(title).toLowerCase()
+        );
+        return res.json(dataByStatus);
+      }
+    } catch (error) {
+      res.json({ error: error.message });
+    }
+  },
+  async changeStudentData(req, res) {
+    try {
+      const worker = await User.findById(req.params.workerId);
+      const student = await Student.findById(req.params.id);
+      if (String(worker._id) !== String(student.addedBy)) {
+        return res.json({ error: "Ошибка доступа" });
+      }
+
+      const data = await Student.findByIdAndUpdate(
+        req.params.id,
+        {
+          ...req.body,
+        },
+        { new: true }
+      );
       return res.json(data);
     } catch (error) {
       res.json({ error: error.message });
     }
   },
-  async getStudentByStatus(req, res) {
+
+  async getStudentById(req, res) {
     try {
-      const { title } = req.params;
-      const data = await Student.find({
-        status: { title: title },
-      });
+      const data = await Student.findById(req.params.id);
       return res.json(data);
     } catch (error) {
       res.json({ error: error.message });
